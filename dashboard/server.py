@@ -14,7 +14,7 @@ def hello():
 @app.route('/update/')
 def update():
     # sudo apt-get install python-mysqldb
-    db = MySQLdb.connect(host="172.17.0.3", user="root", passwd="root", db="hpc_project")
+    db = MySQLdb.connect(host="localhost", user="root", passwd="", db="hpc_project")
 
     # By date
     sentiment_detail_hourly_keys = set()
@@ -91,4 +91,4 @@ def update():
         sentiment, sentiment_detail_hourly]), status=200, mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=80)

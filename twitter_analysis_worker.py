@@ -73,11 +73,11 @@ from pyspark.streaming import StreamingContext
 # ===========================================================
 # SETTINGS
 # ===========================================================
-broker_url = "tcp://hpc.erikasiregar.tk:1883"
+broker_url = "tcp://localhost:1883"
 topic = "trump-executive-order"
-mysql_host = '172.17.0.3'
+mysql_host = 'localhost'
 mysql_user = 'root'
-mysql_password = 'root'
+mysql_password = ''
 mysql_db = 'hpc_project'
 
 sentiment_table = 'trump_executive_order'

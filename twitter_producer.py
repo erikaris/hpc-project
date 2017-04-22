@@ -2,9 +2,9 @@ from threading import Thread
 import paho.mqtt.client as paho
 import redis
 
-broker = redis.Redis(host='hpc.erikasiregar.tk')
+broker = redis.Redis(host='localhost')
 client = paho.Client()
-client.connect('hpc.erikasiregar.tk')
+client.connect('localhost')
 
 
 class Publisher(Thread):

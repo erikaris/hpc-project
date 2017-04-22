@@ -6,7 +6,8 @@ from tweepy import Stream
 from tweepy import StreamListener
 
 
-broker = redis.Redis(host='hpc.erikasiregar.tk')
+# broker = redis.Redis(host='hpc.erikasiregar.tk')
+broker = redis.Redis(host='localhost')
 broker_channel = 'trump-executive-order'
 text_to_track = ['executive order', 'winning for america', 'muslim ban', 'terror ban', 'travel ban', 'immigration',
                  'refugee', 'latino', 'executiveorder', 'winningforamerica', 'muslimban', 'muslim', 'terrorban',
@@ -34,8 +35,8 @@ class TwitterCrawler(Thread):
         Thread.__init__(self)
 
     def run(self):
-        auth = OAuthHandler('ofYvOilGnckcvn5gARVJnIhsY', 'QC8p29bOTm66R2ZFnRvndHWFkfK8YFPVCfSqbwe8gjHavA6CYc')
-        auth.set_access_token('	2689318266-7KnyuRjv8MitXGiiLkjgBeVzFqIyjxAVbVaRY8v',
+        auth = OAuthHandler('85FOoqjpMwDzU6JYfxlCkYFXR', '7jCu216FRhU0nTnx1c8j9rXXNnItsoHiBV4WPalSUUaQkiE27O')
+        auth.set_access_token('2689318266-7KnyuRjv8MitXGiiLkjgBeVzFqIyjxAVbVaRY8v',
                               'BqdwUYQXMkNtWHt2IClHjSOkJxhFdL8Cp2pObqVDF6lls')
         stream = Stream(auth, TwitterListener())
 
