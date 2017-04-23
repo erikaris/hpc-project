@@ -67,8 +67,27 @@ def update():
     cur.close()
 
     num_data = sum(sentiment.values())
-    for sent in sentiment:
-        sentiment[sent] = float(sentiment[sent]) / num_data * 100
+    if num_data > 0:
+        for sent in sentiment:
+            sentiment[sent] = float(sentiment[sent]) / num_data * 100
+
+
+    # By hashtag
+    hashtags = {}
+    cur = db.cursor()
+    cur.execute('SELECT hashtag, count(*) as freq FROM trump_executive_order_hashtag GROUP BY hashtag ORDER BY freq desc')
+    for hashtag, count in cur.fetchall():
+        hashtags[hashtag.lower()] = int(count)
+    cur.close()
+
+    # By terms
+    terms = {}
+    cur = db.cursor()
+    cur.execute(
+        'SELECT term, count(*) as freq FROM trump_executive_order_term GROUP BY term ORDER BY freq desc')
+    for term, count in cur.fetchall():
+        terms[term.lower()] = int(count)
+    cur.close()
 
 
     # By batch
@@ -87,8 +106,8 @@ def update():
 
     return Response(response=json.dumps([
         {'num_processed': num_data, 'num_batch': len(batch_status_count),
-         'avg_time_window': int(sum(batch_time_windows)/len(batch_time_windows))},
-        sentiment, sentiment_detail_hourly]), status=200, mimetype='application/json')
+         'avg_time_window': int(sum(batch_time_windows)/len(batch_time_windows)) if len(batch_time_windows) > 0 else 0},
+        sentiment, sentiment_detail_hourly, hashtags, terms]), status=200, mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)

@@ -82,6 +82,8 @@ mysql_db = 'hpc_project'
 
 sentiment_table = 'trump_executive_order'
 execute_summary_table = 'trump_executive_order_summary'
+hashtag_table = 'trump_executive_order_hashtag'
+term_table = 'trump_executive_order_term'
 # ===========================================================
 
 conf = SparkConf().setAppName('Twitter')
@@ -93,6 +95,22 @@ ssc = StreamingContext(sc, 5)
 ssc.checkpoint("checkpoint")
 
 sql_context = SQLContext(sc)
+
+stopwords = [u'all', u'just', u'being', u'over', u'both', u'through', u'yourselves', u'its', u'before',
+             u'o', u'hadn', u'herself', u'll', u'had', u'should', u'to', u'only', u'won', u'under',
+             u'ours', u'has', u'do', u'them', u'his', u'very', u'they', u'not', u'during', u'now', u'him',
+             u'nor', u'd', u'did', u'didn', u'this', u'she', u'each', u'further', u'where', u'few',
+             u'because', u'doing', u'some', u'hasn', u'are', u'our', u'ourselves', u'out', u'what', u'for',
+             u'while', u're', u'does', u'above', u'between', u'mustn', u't', u'be', u'we', u'who', u'were',
+             u'here', u'shouldn', u'hers', u'by', u'on', u'about', u'couldn', u'of', u'against', u's',
+             u'isn', u'or', u'own', u'into', u'yourself', u'down', u'mightn', u'wasn', u'your', u'from',
+             u'her', u'their', u'aren', u'there', u'been', u'whom', u'too', u'wouldn', u'themselves',
+             u'weren', u'was', u'until', u'more', u'himself', u'that', u'but', u'don', u'with', u'than',
+             u'those', u'he', u'me', u'myself', u'ma', u'these', u'up', u'will', u'below', u'ain', u'can',
+             u'theirs', u'my', u'and', u've', u'then', u'is', u'am', u'it', u'doesn', u'an', u'as',
+             u'itself', u'at', u'have', u'in', u'any', u'if', u'again', u'no', u'when', u'same', u'how',
+             u'other', u'which', u'you', u'shan', u'needn', u'haven', u'after', u'most', u'such', u'why',
+             u'a', u'off', u'i', u'm', u'yours', u'so', u'y', u'the', u'having', u'once']
 
 
 def get_spark_session_instance(spark_conf):
@@ -121,6 +139,10 @@ def decide_sentiment(score):
     return keys[max_key]
 
 
+def detect_hashtags(text):
+    return re.findall(r"#(\w+)", text)
+
+
 def count_in_a_partition(iterator):
     yield sum(1 for _ in iterator)
 
@@ -138,7 +160,7 @@ def process_rdd(rdd):
             .map(lambda (ts, ori_text, text): (ts, ori_text, text, sid.polarity_scores(text))) \
             .map(lambda (ts, ori_text, text, score): (ts, ori_text, text, decide_sentiment(score)))
 
-        # To insert
+        # Save sentiment to mysql
         row_rdd = rdd.map(lambda (ts, ori_text, text, sentiment):
                           Row(process_time=now, status_time=datetime.fromtimestamp(int(ts) / 1000),
                               status=ori_text, sentiment=sentiment))
@@ -155,7 +177,30 @@ def process_rdd(rdd):
         #     .option("user", mysql_user).option("password", mysql_password).load()
         # sentiment_df.show()
 
-        # Insert summary
+        # Parse hashtag and save to mysql
+        hashtag_rdd = rdd.map(lambda (ts, ori_text, text, sentiment): (ts, detect_hashtags(ori_text)))\
+            .flatMapValues(lambda w: w)\
+            .map(lambda (ts, hashtag): Row(process_time=now, status_time=datetime.fromtimestamp(int(ts) / 1000),
+                                           hashtag=hashtag))
+        hashtag_df = spark.createDataFrame(hashtag_rdd)
+        hashtag_df.write.format("jdbc").mode('append') \
+            .option("url", "jdbc:mysql://{0}/{1}".format(mysql_host, mysql_db)) \
+            .option("driver", "com.mysql.jdbc.Driver").option("dbtable", hashtag_table) \
+            .option("user", mysql_user).option("password", mysql_password).save()
+
+        # Parse term and save to mysql
+        term_rdd = rdd.map(lambda (ts, ori_text, text, sentiment): (ts, text.split()))\
+            .flatMapValues(lambda w: w)\
+            .filter(lambda (ts, term): term and term.lower() not in stopwords)\
+            .map(lambda (ts, term): Row(process_time=now, status_time=datetime.fromtimestamp(int(ts) / 1000),
+                                        term=term))
+        term_df = spark.createDataFrame(term_rdd)
+        term_df.write.format("jdbc").mode('append') \
+            .option("url", "jdbc:mysql://{0}/{1}".format(mysql_host, mysql_db)) \
+            .option("driver", "com.mysql.jdbc.Driver").option("dbtable", term_table) \
+            .option("user", mysql_user).option("password", mysql_password).save()
+
+        # Save execution summary to mysql
         num_status_processed = sum(rdd.mapPartitions(count_in_a_partition).collect())
         summ_row_rdd = sc.parallelize([[now, num_status_processed]], 1)\
             .map(lambda (ts, count): Row(process_time=ts, status_count=count))
