@@ -40,6 +40,7 @@ RUN pip install tweepy redis paho-mqtt flask nltk --no-cache-dir
 # Project dir
 RUN mkdir -p /app
 COPY . /app
+RUN chmod +x -R /app/entrypoint.sh
 
 ENV PORT 80
 EXPOSE $PORT
