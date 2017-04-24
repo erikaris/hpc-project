@@ -2,7 +2,7 @@
 Twitter Sentiment Analysis of President Trump’s Executive Order using Apache Spark and MQTT
 
 The Twitter Sentiment Analysis Project is a tool that download twitter streaming data related to President Trump's Executive Order towards certain issues.
-The tweets that are downloaded are the tweets containing hashtags: #ExecutiveOrder​, ​#Trump, ​#WinningForAmerica​, #MuslimBan​, ​#Muslim​, ​#TerrorBan​, ​#TravelBan​, ​#NoBanNoWallNoRaids​, ​#immigration​, ​#refugee​, #MakeAmericaGreatAgain ​, #travel, ​and ​#Latino​.  
+The tweets that are downloaded are the tweets containing hashtags: \#ExecutiveOrder​, ​\#Trump, \​#WinningForAmerica​, \#MuslimBan​, ​\#Muslim​, \​#TerrorBan​, ​\#TravelBan​, ​\#NoBanNoWallNoRaids​, ​\#immigration​, ​\#refugee​, \#MakeAmericaGreatAgain ​, \#travel, ​and \​#Latino​.  
 
 This is a final project for the course CS824 - High Parallel Computing and Big Data that I took at Old Dominion University (ODU) in Spring 2017.
 
