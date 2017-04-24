@@ -40,7 +40,11 @@ RUN pip install tweepy redis paho-mqtt flask nltk --no-cache-dir
 # Project dir
 RUN mkdir -p /app
 COPY . /app
-RUN chmod +x -R /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/1_twitter_crawler.sh
+RUN chmod +x /app/2_twitter_analysis.sh
+RUN chmod +x /app/3_twitter_producer.sh
+RUN chmod +x /app/4_twitter_dashboard.sh
 
 ENV PORT 80
 EXPOSE $PORT
