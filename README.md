@@ -36,7 +36,7 @@ Type the command below on terminal to get the URI:
 ```
 ip address
 ```
-[screenshot of ip_address]
+![](https://github.com/erikaris/hpc-project/raw/screenshot/ip_address.png)
 
 4. Copy the ip address resulted from the command in point no. 3 and paste it onto a web browser.
 
