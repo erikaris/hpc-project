@@ -41,7 +41,7 @@ ip address
 4. Copy the ip address resulted from the command in point no. 3 and paste it onto a web browser.
 
 5. The user can see the visualization of the sentiment analysis as illustrated in the screenshot below.
-[screenshot of visualization dashboard]
+![visualization_dashboard](https://cloud.githubusercontent.com/assets/16355740/25354542/4b8ecac0-2901-11e7-998d-9424cbbc9567.png)
 
 
 ### Method 2: Without Docker
