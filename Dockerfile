@@ -38,6 +38,11 @@ RUN pip install --upgrade pip --no-cache-dir
 RUN pip install tweepy redis paho-mqtt flask nltk --no-cache-dir
 
 # Project dir
+ENV CONSUMER_KEY='85FOoqjpMwDzU6JYfxlCkYFXR'
+ENV CONSUMER_SECRET='7jCu216FRhU0nTnx1c8j9rXXNnItsoHiBV4WPalSUUaQkiE27O'
+ENV ACCESS_TOKEN_KEY='2689318266-7KnyuRjv8MitXGiiLkjgBeVzFqIyjxAVbVaRY8v'
+ENV ACCESS_TOKEN_SECRET='BqdwUYQXMkNtWHt2IClHjSOkJxhFdL8Cp2pObqVDF6lls'
+
 RUN mkdir -p /app
 COPY . /app
 RUN chmod +x /app/entrypoint.sh

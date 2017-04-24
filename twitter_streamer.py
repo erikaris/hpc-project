@@ -1,4 +1,5 @@
 import json
+import sys
 from threading import Thread
 import redis
 from tweepy import OAuthHandler
@@ -31,13 +32,14 @@ class TwitterListener(StreamListener):
 
 
 class TwitterCrawler(Thread):
-    def __init__(self):
+    def __init__(self, consumer_key, consumer_secret, token_key, token_secret):
         Thread.__init__(self)
+        self.consumer_key, self.consumer_secret, self.token_key, self.token_secret = \
+            consumer_key, consumer_secret, token_key, token_secret
 
     def run(self):
-        auth = OAuthHandler('85FOoqjpMwDzU6JYfxlCkYFXR', '7jCu216FRhU0nTnx1c8j9rXXNnItsoHiBV4WPalSUUaQkiE27O')
-        auth.set_access_token('2689318266-7KnyuRjv8MitXGiiLkjgBeVzFqIyjxAVbVaRY8v',
-                              'BqdwUYQXMkNtWHt2IClHjSOkJxhFdL8Cp2pObqVDF6lls')
+        auth = OAuthHandler(self.consumer_key, self.consumer_secret)
+        auth.set_access_token(self.token_key, self.token_secret)
         stream = Stream(auth, TwitterListener())
 
         while True:
@@ -48,5 +50,12 @@ class TwitterCrawler(Thread):
                 pass
 
 if __name__ == '__main__':
-    TwitterCrawler().start()
+    args = sys.argv
+    if len(args) < 5:
+        args[1], args[2], args[3], args[4] = '85FOoqjpMwDzU6JYfxlCkYFXR', \
+                                             '7jCu216FRhU0nTnx1c8j9rXXNnItsoHiBV4WPalSUUaQkiE27O', \
+                                             '2689318266-7KnyuRjv8MitXGiiLkjgBeVzFqIyjxAVbVaRY8v', \
+                                             'BqdwUYQXMkNtWHt2IClHjSOkJxhFdL8Cp2pObqVDF6lls'
+
+    TwitterCrawler(args[1], args[2], args[3], args[4]).start()
 
