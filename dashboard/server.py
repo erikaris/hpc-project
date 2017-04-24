@@ -18,11 +18,7 @@ def update():
 
     # By date
     sentiment_detail_hourly_keys = set()
-    sentiment_detail_hourly = {
-        'positive': {},
-        'negative': {},
-        'neutral': {}
-    }
+    sentiment_detail_hourly = {'positive': {}, 'negative': {}, 'neutral': {}}
 
     cur = db.cursor()
     cur.execute('SELECT DATE(status_time), HOUR(status_time), sentiment, count(*) FROM trump_executive_order '
@@ -52,13 +48,8 @@ def update():
     sentiment_detail_hourly['negative'] = sorted([[k, v] for k, v in sentiment_detail_hourly['negative'].items()])
     sentiment_detail_hourly['neutral'] = sorted([[k, v] for k, v in sentiment_detail_hourly['neutral'].items()])
 
-
     # By sentiment
-    sentiment = {
-        'positive': 0,
-        'negative': 0,
-        'neutral': 0
-    }
+    sentiment = {'positive': 0, 'negative': 0, 'neutral': 0}
 
     cur = db.cursor()
     cur.execute('SELECT sentiment, count(*) FROM trump_executive_order GROUP BY sentiment')
@@ -70,7 +61,6 @@ def update():
     if num_data > 0:
         for sent in sentiment:
             sentiment[sent] = float(sentiment[sent]) / num_data * 100
-
 
     # By hashtag
     hashtags = {}
@@ -88,7 +78,6 @@ def update():
     for term, count in cur.fetchall():
         terms[term.lower()] = int(count)
     cur.close()
-
 
     # By batch
     batch_status_count = []

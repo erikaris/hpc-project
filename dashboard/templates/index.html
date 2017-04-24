@@ -391,25 +391,19 @@
           var hashtags = data[3]
           var terms = data[4]
 
-          // ====
-          //
-          // ====
+          // Update widget
           $('.stats #num_processed .count').html(stats['num_processed']);
           $('.stats #num_batch .count').html(stats['num_batch']);
           $('.stats #avg_status_batch .count').html(parseInt(stats['num_processed']/stats['num_batch']));
           $('.stats #avg_time_batch .count').html(stats['avg_time_window']);
 
 
-          // ====
-          //
-          // ====
+          // Update mainchart
           $.plot( $("#chart_plot_01"), [ sentiment_detail_hourly['positive'], sentiment_detail_hourly['neutral'],
             sentiment_detail_hourly['negative'] ],  chart_plot_01_settings );
 
 
-          // ====
-          //
-          // ====
+          // Update sentiment
           var sents = Object.keys(sentiment);
           sents.forEach(function(sent) {
               $('#progress_sentiment_' + sent + ' .progress-bar').css('width', sentiment[sent] + '%');
