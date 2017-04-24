@@ -13,11 +13,11 @@ Cara menjalankan project ini dapat dilakukan dalam 2 cara:
 
 ### Docker
 ```
-docker pull erikaris/hpc_project:local
+docker pull erikaris/hpc_project:latest
 ```
 
 ```
-docker run -i -t -P erikaris/hpc_project:local
+docker run -i -t -P erikaris/hpc_project:latest
 ```
 
 ### Per Subsystem
