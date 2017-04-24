@@ -1,27 +1,53 @@
 # HPC PROJECT
 Twitter Sentiment Analysis of President Trump’s Executive Order using Apache Spark and MQTT
 
-Project ini terdiri dari 4 komponen utama:
+The Twitter Sentiment Analysis Project is a tool that download twitter streaming data related to President Trump's Executive Order towards certain issues.
+The tweets that are downloaded are the tweets containing hashtags: #ExecutiveOrder​, ​#Trump, ​#WinningForAmerica​, #MuslimBan​, ​#Muslim​, ​#TerrorBan​, ​#TravelBan​, ​#NoBanNoWallNoRaids​, ​#immigration​, ​#refugee​, #MakeAmericaGreatAgain ​, #travel, ​and ​#Latino​.  
 
-1. Twitter crawler
-2. Twitter producer
-3. Twitter analyzer
-4. Twitter dashboard
+This is a final project for the course CS824 - High Parallel Computing and Big Data that I took at Old Dominion University (ODU) in Spring 2017.
+
+This project comprises 4 main components:
+1. Twitter crawler    --> Crawl the streaming Twitter data.
+2. Twitter producer   --> Fetch data from Redis and publish it to Spark Streaming.
+3. Twitter analyzer   --> Conduct sentiment analysis on the streaming data.
+4. Twitter dashboard  --> Visualize the sentiment analysis result.
 
 ## Usage
-Cara menjalankan project ini dapat dilakukan dalam 2 cara:
+There are 2 (two) ways that are provided to use this tool:
+1. Using Docker (Recommended)
+2. Without Docker
 
-### Docker
+### Method 1: Using Docker
+Using Docker is really recommended because user does not have to worry about software dependencies and can avoid the hassle of downloading and installing the required softwares.
+The user should download and install Docker from https://docs.docker.com/engine/installation/, then simply follows the steps below:
+
+1. Open terminal and pull the Docker Image, using command:
 ```
 docker pull erikaris/hpc_project:latest
 ```
 
+2. Run the Docker Image as a container, using command:
 ```
-docker run -i -t -P erikaris/hpc_project:latest
+docker run -itP --name hpc-project erikaris/hpc_project:latest
 ```
 
-### Per Subsystem
-- Install required software
+3. The second the container is running, the crawling, producing, and analyzing process will be automatically started. The next thing that a user should do is opening the dashboard to see the visualization of the sentiment analysis result.
+Type the command below on terminal to get the URI:
+```
+ip address
+```
+[screenshot of ip_address]
+
+4. Copy the ip address resulted from the command in point no. 3 and paste it onto a web browser.
+
+5. The user can see the visualization of the sentiment analysis as illustrated in the screenshot below.
+[screenshot of visualization dashboard]
+
+
+### Method 2: Without Docker
+Without using Docker, the user has to install all the required software before starting the sentiment analysis tool.
+
+1. Install required software
 ```
 apt-get install -y python python-pip redis-server openjdk-8-jre mysql-server mosquitto mosquitto-clients python-mysqldb
 ```
@@ -30,7 +56,7 @@ apt-get install -y python python-pip redis-server openjdk-8-jre mysql-server mos
 pip install tweepy redis paho-mqtt flask nltk
 ```
 
-- Create MySQL database and required tables
+2. Create MySQL database and required tables
 ```
 mysql -u root -e "CREATE DATABASE hpc_project";
 ```
@@ -58,28 +84,29 @@ mysql -u root -D "hpc_project" -e "CREATE TABLE trump_executive_order_term \
 term VARCHAR(200));";
 ```
 
-- Download and extract Spark
+3. Download and extract Spark
 ```
 wget -O spark.tgz http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz
 tar -xvzf spark.tgz
 ```
 
-- Running crawler
+4. Run the crawler process
 ```
 1_twitter_crawler.sh
 ```
 
-- Running analysis
+5. Run the analysis process
 ```
 2_twitter_analysis.sh
 ```
 
-- Twitter producer
+6. Run the Twitter producer
 ```
 3_twitter_producer.sh
 ```
 
-- Twitter dashboard
+7. Run the Twitter dashboard
 ```
 4_twitter_dashboard.sh
 ```
+8. View the visualization dashboard on a web browser by accessing the URI: *localhost*
