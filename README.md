@@ -1,4 +1,4 @@
-rr# HPC PROJECT
+# HPC PROJECT
 Twitter Sentiment Analysis of President Trump’s Executive Order using Apache Spark and MQTT
 
 The Twitter Sentiment Analysis Project is a tool that download twitter streaming data related to President Trump's Executive Order towards certain issues.
@@ -36,7 +36,7 @@ Type the command below on terminal to get the URI:
 ```
 ip address
 ```
-![](https://github.com/erikaris/hpc-project/raw/screenshot/ip_address.png)
+![ip_address](https://cloud.githubusercontent.com/assets/16355740/25354078/8f0773d0-28ff-11e7-9b96-c1b5fdf0a60e.png)
 
 4. Copy the ip address resulted from the command in point no. 3 and paste it onto a web browser.
 
