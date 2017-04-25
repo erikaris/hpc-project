@@ -20,6 +20,6 @@ nohup mosquitto -c /etc/mosquitto/mosquitto.conf > mosquitto.log &
 nohup /app/1_twitter_crawler.sh "$CONSUMER_KEY" "$CONSUMER_SECRET" "$ACCESS_TOKEN_KEY" "$ACCESS_TOKEN_SECRET" > crawler.log &
 nohup /app/2_twitter_analysis.sh > analysis.log &
 nohup /app/3_twitter_producer.sh > producer.log &
-nohup /app/4_twitter_dashboard.sh > dashboard.log &
+nohup /app/4_twitter_dashboard.sh $PORT > dashboard.log &
 
 bash

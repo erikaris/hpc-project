@@ -1,6 +1,8 @@
 import MySQLdb
 import json
 from datetime import datetime
+
+import sys
 from flask import Flask
 from flask import Response
 from flask import render_template
@@ -14,7 +16,7 @@ def hello():
 @app.route('/update/')
 def update():
     # sudo apt-get install python-mysqldb
-    db = MySQLdb.connect(host="localhost", user="root", passwd="", db="hpc_project")
+    db = MySQLdb.connect(host="127.0.0.1", user="root", passwd="", db="hpc_project")
 
     # By date
     sentiment_detail_hourly_keys = set()
@@ -63,21 +65,35 @@ def update():
             sentiment[sent] = float(sentiment[sent]) / num_data * 100
 
     # By hashtag
-    hashtags = {}
+    hashtags = []
+    hashtag_total = 0
     cur = db.cursor()
     cur.execute('SELECT hashtag, count(*) as freq FROM trump_executive_order_hashtag GROUP BY hashtag ORDER BY freq desc')
     for hashtag, count in cur.fetchall():
-        hashtags[hashtag.lower()] = int(count)
+        hashtags.append((hashtag.lower(), int(count)))
+        hashtag_total += int(count)
     cur.close()
 
+    for i, (t, c) in enumerate(hashtags):
+        hashtags[i] = (t, c, float(c)/hashtag_total * 100)
+
+    hashtags = hashtags[:5]
+
     # By terms
-    terms = {}
+    terms = []
+    term_total = 0
     cur = db.cursor()
     cur.execute(
         'SELECT term, count(*) as freq FROM trump_executive_order_term GROUP BY term ORDER BY freq desc')
     for term, count in cur.fetchall():
-        terms[term.lower()] = int(count)
+        terms.append((term.lower(), int(count)))
+        term_total += int(count)
     cur.close()
+
+    for i, (t, c) in enumerate(terms):
+        terms[i] = (t, c, float(c)/term_total * 100)
+
+    terms = terms[:5]
 
     # By batch
     batch_status_count = []
@@ -99,4 +115,7 @@ def update():
         sentiment, sentiment_detail_hourly, hashtags, terms]), status=200, mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    args = sys.argv
+    if len(args) < 2:
+        args[1] = 80
+    app.run(host='0.0.0.0', port=args[1])

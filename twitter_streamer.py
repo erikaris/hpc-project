@@ -8,7 +8,7 @@ from tweepy import StreamListener
 
 
 # broker = redis.Redis(host='hpc.erikasiregar.tk')
-broker = redis.Redis(host='localhost')
+broker = redis.Redis(host='127.0.0.1')
 broker_channel = 'trump-executive-order'
 text_to_track = ['executive order', 'winning for america', 'muslim ban', 'terror ban', 'travel ban', 'immigration',
                  'refugee', 'latino', 'executiveorder', 'winningforamerica', 'muslimban', 'muslim', 'terrorban',
