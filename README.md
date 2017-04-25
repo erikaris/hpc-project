@@ -20,7 +20,7 @@ There are 2 (two) ways that are provided to use this tool:
 
 ### Method 1: Using Docker
 Using Docker is really recommended because user does not have to worry about software dependencies and can avoid the hassle of downloading and installing the required softwares.
-The user should download and install Docker from https://docs.docker.com/engine/installation/, then simply follows the steps below:
+The user should download and install Docker from https://docs.docker.com/engine/installation/ or from https://docs.docker.com/docker-for-windows/install/ (for Windows OS), then simply follows the steps below:
 
 1. Open terminal and pull the Docker Image, using command:
 ```
