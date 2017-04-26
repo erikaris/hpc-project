@@ -29,7 +29,7 @@ docker pull erikaris/hpc_project:latest
 
 2. Run the Docker Image as a container, using command:
 ```
-docker run -itP --name hpc-project erikaris/hpc_project:latest
+docker run -i -t -d --memory=2g -p 5555:80  -e PORT=80 -e CONSUMER_KEY=<USER_CONSUMER_KEY> -e CONSUMER_SECRET=<USER_CONSUMER_SECRET> -e ACCESS_TOKEN_KEY=<USER_TOKEN_KEY> -e ACCESS_TOKEN_SECRET=<USER_TOKEN_SECRET> --name=hpc-project erikaris/hpc-project:latest /app/entrypoint.sh
 ```
 
 3. The second the container is running, the crawling, producing, and analyzing process will be automatically started. The next thing that a user should do is opening the dashboard to see the visualization of the sentiment analysis result.
