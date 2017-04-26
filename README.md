@@ -28,6 +28,7 @@ docker pull erikaris/hpc_project:latest
 ```
 
 2. Run the Docker Image as a container, using command:
+Notes: User must first go to https://apps.twitter.com to create Twitter App Key. 
 ```
 docker run -i -t -d --memory=2g -p 5555:80  -e PORT=80 -e CONSUMER_KEY=<USER_CONSUMER_KEY> -e CONSUMER_SECRET=<USER_CONSUMER_SECRET> -e ACCESS_TOKEN_KEY=<USER_TOKEN_KEY> -e ACCESS_TOKEN_SECRET=<USER_TOKEN_SECRET> --name=hpc-project erikaris/hpc-project:latest /app/entrypoint.sh
 ```
