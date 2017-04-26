@@ -2,6 +2,8 @@ HPC PROJECT
 
 # Twitter Sentiment Analysis of President Trump’s Executive Order using Apache Spark and MQTT
 
+Presentation's slide: https://docs.google.com/presentation/d/1uu_o3Xn6Km2GtLikEi9pnLsZFHoev6PRy2TCq77tjNc/edit?usp=sharing
+
 The Twitter Sentiment Analysis Project is a tool that download twitter streaming data related to President Trump's Executive Order towards certain issues.
 The tweets that are downloaded are the tweets containing hashtags: \#ExecutiveOrder, \#Trump, \#WinningForAmerica, \#MuslimBan, \#Muslim, \#TerrorBan, \#TravelBan, \#NoBanNoWallNoRaids, \#immigration, \#refugee, \#MakeAmericaGreatAgain, \#travel, and \#Latino.
 
